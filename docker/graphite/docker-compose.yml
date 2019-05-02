@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  graphite:
+    build: .
+    command: "/opt/graphite/bin/run_graphite_web.sh"
+    ports:
+      - "8080:8080"
+    volumes:
+      - whisper_data:/opt/graphite/storage/whisper
+  carbon:
+    build: .
+    command: "/opt/graphite/bin/carbon-cache.py --nodaemon start"
+    ports:
+      - "2003:2003"
+    volumes:
+      - whisper_data:/opt/graphite/storage/whisper
+      - ./conf:/opt/graphite/conf
+    # environment:
+    #   GRAPHITE_IP: graphite # TODO: Find a way to write to conf.
+
+volumes:
+  whisper_data: {}
