@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  pingservice:
+    image: alpine
+    command: "ping other"
+    depends_on:
+      - other
+  curlservice:
+    image: "appropriate/curl"
+    command: "curl nginxhello:80"
+    depends_on:
+      - nginxhello
+  nginxhello:
+    image: nginxdemos/hello
+    ports:
+      - "8888:80"
+  other:
+    image: alpine
+    command: "sh -c 'echo other && sleep 1000'"
+  # echoservice:
+  #   image: alpine
+  #   command: |
+  #     sh -c "echo hi \
+  #     hello \
+  #     ENV_TEST: $${ENV_TEST} \
+  #     ENV_OTHER: $${ENV_OTHER} \
+  #     ENV_DOLLAR_OTHER: $${ENV_DOLLAR_OTHER} \
+  #     ENV_DOLLAR_BRACKETS_OTHER: $${ENV_DOLLAR_BRACKETS_OTHER} \
+  #     ENV_LINKINGTEST_OTHER_1: $${ENV_LINKINGTEST_OTHER_1} \
+  #     ENV_DOLLAR_LINKINGTEST_OTHER_1: $${ENV_DOLLAR_LINKINGTEST_OTHER_1}
+  #     "
+  #   environment:
+  #     ENV_TEST: test
+  #     ENV_OTHER: other
+  #     ENV_DOLLAR_OTHER: "$other"
+  #     ENV_DOLLAR_BRACKETS_OTHER: "${other}"
+  #     ENV_LINKINGTEST_OTHER_1: linkingtest_other_1
+  #     ENV_DOLLAR_LINKINGTEST_OTHER_1: "$linkingtest_other_1"
+  #   depends_on:
+  #     - other
