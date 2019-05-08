@@ -1,13 +1,21 @@
 version: '3'
 
 services:
-  graphite:
-    build: .
-    command: "/opt/graphite/bin/run_graphite_web.sh"
+  nginx:
+    image: "nginx:1.16-alpine"
     ports:
-      - "8080:8080"
+      - "8674:80"
     volumes:
-      - whisper_data:/opt/graphite/storage/whisper
+      - "./nginx-conf/graphite.conf:/etc/nginx/conf.d/default.conf:ro"
+      - "graphite_static_files:/usr/share/nginx/html:ro"
+      # - type: "volume"
+      #   source: graphite_static_files
+      #   target: /usr/share/nginx/html
+      #   read_only: true
+      #   volume:
+      #     nocopy: true
+    depends_on:
+      - graphite
   carbon:
     build: .
     command: "/opt/graphite/bin/carbon-cache.py --nodaemon start"
@@ -16,8 +24,18 @@ services:
     volumes:
       - whisper_data:/opt/graphite/storage/whisper
       - ./conf:/opt/graphite/conf
-    # environment:
-    #   GRAPHITE_IP: graphite # TODO: Find a way to write to conf.
+    depends_on:
+      - graphite
+  graphite:
+    build: .
+    command: "/opt/graphite/bin/run_graphite_web.sh"
+    ports:
+      - "8080:8080"
+    volumes:
+      - "whisper_data:/opt/graphite/storage/whisper"
+      - "./run_graphite_web.sh:/opt/graphite/bin/run_graphite_web.sh"
+      - "graphite_static_files:/opt/graphite/static" # I'm not sure this is the right path.
 
 volumes:
   whisper_data: {}
+  graphite_static_files: {}

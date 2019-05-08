@@ -12,8 +12,6 @@ RUN apk --no-cache add \
     py3-pip \
     gcc
 
-# cairo, py3-cairo, sqlite
-
 # logrotate should be useful.
 
 # Install graphite and fellas.
@@ -27,13 +25,13 @@ RUN pip3 install \
     whisper==${whisper_version} \
     graphite-web==${graphite_version}
 
-RUN pip3 install gunicorn
+ARG gunicorn_version=19.9.0
+RUN pip3 install gunicorn==${gunicorn_version}
 RUN apk --no-cache add sqlite
 RUN apk --no-cache add cairo
 
-COPY ./run_graphite_web.sh /opt/graphite/bin
-
 ENV PATH="/opt/graphite/bin:${PATH}"
+ENV GRAPHITE_ROOT="/opt/graphite"
 
 # PYTHONPATH=/opt/graphite/webapp /opt/graphite/bin/django-admin.py collectstatic --noinput --settings=graphite.settings
 
