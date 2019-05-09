@@ -6,13 +6,16 @@ FROM alpine:3.9
 LABEL maintainer="Lucas Possatti <lucas_possatti@hotmail.com>"
 
 RUN apk --no-cache add \
-    python3-dev \
+    cairo \
+    gcc \
     libffi-dev \
+    logrotate \
     musl-dev \
     py3-pip \
-    gcc
-
-# logrotate should be useful.
+    python3-dev \
+    sqlite
+# I'm not sure we need logrotate or if carbon and graphite rotate the logs by
+# themselves magically.
 
 # Install graphite and fellas.
 # Things will get installed to '/opt/graphite'.
@@ -27,12 +30,8 @@ RUN pip3 install \
 
 ARG gunicorn_version=19.9.0
 RUN pip3 install gunicorn==${gunicorn_version}
-RUN apk --no-cache add sqlite
-RUN apk --no-cache add cairo
 
-ENV PATH="/opt/graphite/bin:${PATH}"
 ENV GRAPHITE_ROOT="/opt/graphite"
+ENV PATH="${GRAPHITE_ROOT}/bin:${PATH}"
 
-# PYTHONPATH=/opt/graphite/webapp /opt/graphite/bin/django-admin.py collectstatic --noinput --settings=graphite.settings
-
-CMD ['echo', 'Run each service separately.']
+CMD ['echo', 'ERROR! Run each service separately.']

@@ -13,9 +13,14 @@ export GRAPHITE_WSGI_HOST=${GRAPHITE_WSGI_HOST:-0.0.0.0}
 export GRAPHITE_WSGI_PORT=${GRAPHITE_WSGI_PORT:-8080}
 export PYTHONPATH="${GRAPHITE_ROOT}/webapp:${GRAPHITE_ROOT}/webapp/graphite"
 
-# Create SQLite database, if it's not created already.
+# Create SQLite database.
 if [ ! -e "${GRAPHITE_ROOT}/storage/graphite.db" ]; then
     django-admin.py migrate --settings=graphite.settings --run-syncdb
+fi
+
+# Copy static files.
+if [ ! -d "${GRAPHITE_ROOT}/static/html/" ]; then
+    django-admin.py collectstatic --noinput --settings=graphite.settings
 fi
 
 gunicorn wsgi --preload \
@@ -26,5 +31,4 @@ gunicorn wsgi --preload \
     --max-requests=${GRAPHITE_WSGI_MAX_REQUESTS} \
     --timeout=${GRAPHITE_WSGI_REQUEST_TIMEOUT} \
     --bind="${GRAPHITE_WSGI_HOST}:${GRAPHITE_WSGI_PORT}"
-    # --bind=0.0.0.0:8080
     # --log-file=/var/log/gunicorn.log
