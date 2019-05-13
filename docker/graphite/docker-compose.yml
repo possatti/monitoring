@@ -14,13 +14,14 @@ services:
 
   carbon:
     build: .
-    command: "/opt/graphite/bin/carbon-cache.py --nodaemon start"
+    command: "/opt/graphite/bin/run_carbon_cache.sh"
     ports:
       - "2003:2003"
     restart: always
     volumes:
-      - whisper_data:/opt/graphite/storage/whisper
-      - ./conf:/opt/graphite/conf
+      - "whisper_data:/opt/graphite/storage/whisper"
+      - "./run_carbon_cache.sh:/opt/graphite/bin/run_carbon_cache.sh"
+      - "./conf:/opt/graphite/conf"
 
   graphite:
     build: .
