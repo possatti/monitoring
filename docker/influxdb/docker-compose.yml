@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  web:
+    image: "influxdb:1.7"
+    ports:
+      - "8086:8086"
+    restart: always
+    volumes:
+      - "influxdb_data:/var/lib/influxdb"
+    #environment:
+    #  INFLUXDB_ADMIN_USER: admin
+
+volumes:
+  influxdb_data: {}

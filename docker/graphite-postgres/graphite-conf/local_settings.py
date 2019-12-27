@@ -245,7 +245,7 @@ DEFAULT_XFILES_FACTOR = 0
 #
 DATABASES = {
     'default': {
-        'NAME': 'postgres_db',
+        'NAME': 'graphite_db',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'USER': 'postgres',
         'PASSWORD': 'example',
