@@ -12,7 +12,7 @@ I usually install Collectd from `apt` like `sudo apt-get install collectd`. Then
 
 ## Watching NVIDIA GPUs
 
-For some time I used [nvidia2graphite](https://github.com/possatti/nvidia2graphite). It worked reasonably well, but I [forked it](https://github.com/possatti/nvidia2graphite), so that I could make some changes of my own, like: fixed power readings; fixed crashing when graphite is not already there; enabled restarting of the service.
+For some time I used [nvidia2graphite](https://github.com/stefan-k/nvidia2graphite). It worked reasonably well, but I [forked it](https://github.com/possatti/nvidia2graphite), so that I could make some changes of my own, like: fixed power readings; fixed crashing when graphite is not already up; enabled restarting of the service.
 
 There is an official C plugin for Collectd, but it doesn't come with apt's package yet, and it is very limited on what you can get.
 
